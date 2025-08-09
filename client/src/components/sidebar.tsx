@@ -23,7 +23,7 @@ export default function Sidebar({ currentUser, chats, selectedChat, onSelectChat
   });
 
   return (
-    <div className="w-96 bg-whatsapp-panel border-r border-whatsapp-border flex flex-col">
+    <div className="w-full lg:w-96 bg-whatsapp-panel border-r border-whatsapp-border flex flex-col h-full">
       {/* Header */}
       <div className="bg-whatsapp-panel px-4 py-3 border-b border-whatsapp-border">
         <div className="flex items-center justify-between">

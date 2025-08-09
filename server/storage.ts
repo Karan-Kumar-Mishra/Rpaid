@@ -182,6 +182,7 @@ export class MemStorage implements IStorage {
         senderId: "user-2", // Ravi Kumar
         content: "Hi, I'd like to know more about your services.",
         messageType: "text",
+        metadata: null,
         createdAt: new Date("2025-08-06T12:00:00"),
       },
       {
@@ -190,6 +191,7 @@ export class MemStorage implements IStorage {
         senderId: "user-1", // Our business response
         content: "Hi Ravi! Sure, I'd be happy to help you with that. Could you tell me what you're looking for?",
         messageType: "text",
+        metadata: null,
         createdAt: new Date("2025-08-06T12:00:20"),
       },
       // Conversation 2 - Neha Joshi
@@ -199,6 +201,7 @@ export class MemStorage implements IStorage {
         senderId: "user-3", // Neha Joshi
         content: "Hi, I saw your ad. Can you share more details?",
         messageType: "text",
+        metadata: null,
         createdAt: new Date("2025-08-06T12:16:40"),
       },
       {
@@ -207,6 +210,7 @@ export class MemStorage implements IStorage {
         senderId: "user-1", // Our business response
         content: "Hi Neha! Absolutely. We offer curated home decor pieces—are you looking for nameplates, wall art, or something else?",
         messageType: "text",
+        metadata: null,
         createdAt: new Date("2025-08-06T12:17:10"),
       },
       // Additional sample messages for other chats
@@ -216,6 +220,7 @@ export class MemStorage implements IStorage {
         senderId: "user-4",
         content: "Your message was delivered successfully",
         messageType: "text",
+        metadata: null,
         createdAt: new Date("2025-08-06T11:45:00"),
       },
       {
@@ -224,6 +229,7 @@ export class MemStorage implements IStorage {
         senderId: "user-5",
         content: "Meeting scheduled for tomorrow at 3 PM",
         messageType: "text",
+        metadata: null,
         createdAt: new Date("2025-08-06T10:30:00"),
       },
       {
@@ -232,6 +238,7 @@ export class MemStorage implements IStorage {
         senderId: "user-6",
         content: "Project update shared in the team drive",
         messageType: "text",
+        metadata: null,
         createdAt: new Date("2025-08-06T09:15:00"),
       },
     ];

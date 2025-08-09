@@ -56,21 +56,6 @@ export default function Home() {
   const sendMessage = async (content: string, messageType: string = "text", metadata?: any) => {
     if (!selectedChat || !currentUser) return;
 
-    const tempId = Date.now().toString();
-    const optimisticMessage = {
-      id: tempId,
-      chatId: selectedChat.id,
-      senderId: currentUser.id,
-      content,
-      messageType,
-      metadata,
-      createdAt: new Date(),
-      readBy: []
-    };
-
-    // Add optimistic message immediately
-    setMessages(prev => [...prev, optimisticMessage]);
-
     const messageData = {
       content,
       messageType,
@@ -88,19 +73,11 @@ export default function Home() {
 
       if (!response.ok) {
         throw new Error('Failed to send message');
-        // Remove optimistic message on error
-        setMessages(prev => prev.filter(msg => msg.id !== tempId));
-      } else {
-        const actualMessage = await response.json();
-        // Replace optimistic message with actual message
-        setMessages(prev => 
-          prev.map(msg => msg.id === tempId ? actualMessage : msg)
-        );
       }
+
+      // Message will be added via WebSocket, no need for optimistic updates
     } catch (error) {
       console.error('Error sending message:', error);
-      // Remove optimistic message on error
-      setMessages(prev => prev.filter(msg => msg.id !== tempId));
     }
   };
 
@@ -120,20 +97,25 @@ export default function Home() {
 
   return (
     <div className="flex h-screen whatsapp-bg">
-      <Sidebar
-        currentUser={currentUser}
-        chats={chats}
-        selectedChat={selectedChat}
-        onSelectChat={setSelectedChat}
-      />
-      <ChatArea
-        selectedChat={selectedChat}
-        messages={messages}
-        currentUser={currentUser}
-        onSendMessage={sendMessage}
-        onTyping={handleTyping}
-        typingUsers={typingUsers}
-      />
+      <div className={`${selectedChat ? 'hidden lg:block' : 'block'} w-full lg:w-96 flex-shrink-0`}>
+        <Sidebar
+          currentUser={currentUser}
+          chats={chats}
+          selectedChat={selectedChat}
+          onSelectChat={setSelectedChat}
+        />
+      </div>
+      <div className={`${selectedChat ? 'block' : 'hidden lg:block'} flex-1`}>
+        <ChatArea
+          selectedChat={selectedChat}
+          messages={messages}
+          currentUser={currentUser}
+          onSendMessage={sendMessage}
+          onTyping={handleTyping}
+          typingUsers={typingUsers}
+          onBackToChats={() => setSelectedChat(null)}
+        />
+      </div>
     </div>
   );
 }

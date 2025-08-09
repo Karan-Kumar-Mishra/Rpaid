@@ -43,8 +43,8 @@ export default function MessageBubble({ message, isOwn }: MessageBubbleProps) {
   };
 
   return (
-    <div className={`flex ${isOwn ? "justify-end" : "justify-start"}`}>
-      <div className="max-w-md">
+    <div className={`flex ${isOwn ? "justify-end" : "justify-start"} mb-1`}>
+      <div className="max-w-xs sm:max-w-md">
         <div
           className={`p-3 rounded-lg shadow-sm ${
             isOwn

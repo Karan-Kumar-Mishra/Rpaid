@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import { Video, Phone, Search, MoreVertical, Paperclip, Smile, Mic, Send, MessageCircle } from "lucide-react";
+import { Video, Phone, Search, MoreVertical, Paperclip, Smile, Mic, Send, MessageCircle, ArrowLeft } from "lucide-react";
 import MessageBubble from "./message-bubble";
 import EmojiPicker from "./emoji-picker";
 import AttachmentMenu from "./attachment-menu";
@@ -12,6 +12,7 @@ interface ChatAreaProps {
   onSendMessage: (content: string, messageType?: string, metadata?: any) => void;
   onTyping: (isTyping: boolean) => void;
   typingUsers: Record<string, boolean>;
+  onBackToChats?: () => void;
 }
 
 export default function ChatArea({ 
@@ -20,7 +21,8 @@ export default function ChatArea({
   currentUser, 
   onSendMessage, 
   onTyping,
-  typingUsers 
+  typingUsers,
+  onBackToChats
 }: ChatAreaProps) {
   const [messageInput, setMessageInput] = useState("");
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
@@ -126,6 +128,13 @@ export default function ChatArea({
       <div className="bg-whatsapp-panel px-4 py-3 border-b border-whatsapp-border">
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-3">
+            {/* Mobile back button */}
+            <button
+              onClick={onBackToChats}
+              className="lg:hidden text-whatsapp-secondary hover:text-whatsapp-text transition-colors p-2 -ml-2 rounded-full"
+            >
+              <ArrowLeft className="w-5 h-5" />
+            </button>
             <img
               src={selectedChat.avatar || "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&h=100"}
               alt={`${selectedChat.name} Profile`}
@@ -154,7 +163,7 @@ export default function ChatArea({
       </div>
 
       {/* Messages Area */}
-      <div className="flex-1 overflow-y-auto p-4 space-y-4 chat-pattern custom-scrollbar bg-whatsapp-chat-bg">
+      <div className="flex-1 overflow-y-auto p-2 sm:p-4 space-y-1 chat-pattern custom-scrollbar bg-whatsapp-chat-bg">
         {Object.entries(messageGroups).map(([date, dateMessages]) => (
           <div key={date}>
             {/* Date Separator */}
@@ -192,8 +201,8 @@ export default function ChatArea({
       </div>
 
       {/* Message Input Area */}
-      <div className="bg-whatsapp-panel px-4 py-3 border-t border-whatsapp-border">
-        <form onSubmit={handleSendMessage} className="flex items-center space-x-3">
+      <div className="bg-whatsapp-panel px-2 sm:px-4 py-3 border-t border-whatsapp-border">
+        <form onSubmit={handleSendMessage} className="flex items-center space-x-2 sm:space-x-3">
           {/* Attachment Button */}
           <button
             type="button"
@@ -208,7 +217,7 @@ export default function ChatArea({
             <input
               type="text"
               placeholder="Type a message"
-              className="w-full bg-whatsapp-chat-bg text-whatsapp-text px-4 py-3 pr-12 rounded-lg border-none outline-none placeholder-whatsapp-secondary focus:ring-1 focus:ring-whatsapp-green"
+              className="w-full bg-whatsapp-chat-bg text-whatsapp-text px-3 sm:px-4 py-2 sm:py-3 pr-10 sm:pr-12 rounded-lg border-none outline-none placeholder-whatsapp-secondary focus:ring-1 focus:ring-whatsapp-green text-sm sm:text-base"
               value={messageInput}
               onChange={handleInputChange}
             />
@@ -216,7 +225,7 @@ export default function ChatArea({
             <button
               type="button"
               onClick={() => setShowEmojiPicker(!showEmojiPicker)}
-              className="absolute right-3 top-1/2 transform -translate-y-1/2 text-whatsapp-secondary hover:text-whatsapp-text transition-colors"
+              className="absolute right-2 sm:right-3 top-1/2 transform -translate-y-1/2 text-whatsapp-secondary hover:text-whatsapp-text transition-colors"
             >
               <Smile className="w-5 h-5" />
             </button>
@@ -225,9 +234,9 @@ export default function ChatArea({
           {/* Voice/Send Button */}
           <button
             type="submit"
-            className="bg-whatsapp-green text-white p-3 rounded-full hover:opacity-80 transition-opacity"
+            className="bg-whatsapp-green text-white p-2 sm:p-3 rounded-full hover:opacity-80 transition-opacity flex-shrink-0"
           >
-            {messageInput.trim() ? <Send className="w-4 h-4" /> : <Mic className="w-4 h-4" />}
+            {messageInput.trim() ? <Send className="w-4 h-4 sm:w-5 sm:h-5" /> : <Mic className="w-4 h-4 sm:w-5 sm:h-5" />}
           </button>
         </form>
       </div>
