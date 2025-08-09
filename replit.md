@@ -1,6 +1,16 @@
 # Overview
 
-This is a WhatsApp-like chat application built with a modern full-stack architecture. The application features real-time messaging capabilities with a React frontend and Express.js backend. It provides a familiar chat interface with support for different message types, emoji reactions, file attachments, and real-time communication through WebSockets.
+This is an authentic WhatsApp clone built with a modern full-stack architecture that closely replicates the real WhatsApp Web interface. The application features real-time messaging capabilities with a React frontend and Express.js backend, using authentic WhatsApp conversation data from provided JSON webhook files. It provides a pixel-perfect chat interface with support for different message types, emoji reactions, file attachments, and real-time communication through WebSockets.
+
+## Recent Changes (August 9, 2025)
+- Enhanced UI to match authentic WhatsApp Web design with proper color scheme and spacing
+- Increased chat list width from w-80 to w-96 for better proportions matching real WhatsApp
+- Integrated real WhatsApp conversation data from JSON webhook files into the storage system
+- Updated chat names and messages to reflect authentic business conversations:
+  - Ravi Kumar: "Hi, I'd like to know more about your services."
+  - Neha Joshi: "Hi, I saw your ad. Can you share more details?"
+- Improved message bubbles, chat list styling, and overall visual authenticity
+- Added proper unread message counts based on real conversation data
 
 # User Preferences
 

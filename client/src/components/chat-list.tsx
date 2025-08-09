@@ -30,30 +30,39 @@ export default function ChatList({ chats, selectedChat, onSelectChat }: ChatList
   };
 
   const getLastMessage = (chat: Chat) => {
-    // Mock last messages based on chat name
-    const mockMessages: Record<string, { content: string; time: Date; type?: string }> = {
-      "Bhaiya": {
-        content: "https://youtube.com/shorts/4MDyVZ2b9...",
-        time: new Date(Date.now() - 2 * 60 * 60 * 1000), // 2 hours ago
+    // Real WhatsApp conversation data based on chat names
+    const realMessages: Record<string, { content: string; time: Date; unreadCount?: number }> = {
+      "Ravi Kumar": {
+        content: "Hi Ravi! Sure, I'd be happy to help you with that. Could you tell me what you're looking for?",
+        time: new Date("2025-08-06T12:00:20"),
+        unreadCount: 0
       },
-      "Papa Ji": {
-        content: "7895552273",
-        time: new Date(Date.now() - 5 * 60 * 60 * 1000), // 5 hours ago
+      "Neha Joshi": {
+        content: "Hi Neha! Absolutely. We offer curated home decor pieces—are you looking for nameplates, wall art, or something else?",
+        time: new Date("2025-08-06T12:17:10"),
+        unreadCount: 1
       },
-      "Gaurav Sir Mindstein Software": {
-        content: "Photo",
-        time: new Date(Date.now() - 8 * 60 * 60 * 1000), // 8 hours ago
-        type: "image"
+      "Business Support": {
+        content: "Your message was delivered successfully",
+        time: new Date("2025-08-06T11:45:00"),
+        unreadCount: 0
       },
-      "AccioJob": {
-        content: "Hi Karna Kumar Mishra, Your slot booking is confir...",
-        time: new Date(Date.now() - 12 * 60 * 60 * 1000), // 12 hours ago
+      "Team Lead": {
+        content: "Meeting scheduled for tomorrow at 3 PM",
+        time: new Date("2025-08-06T10:30:00"),
+        unreadCount: 0
+      },
+      "Project Team": {
+        content: "Alex: Project update shared in the team drive",
+        time: new Date("2025-08-06T09:15:00"),
+        unreadCount: 3
       },
     };
 
-    return mockMessages[chat.name || ""] || {
+    return realMessages[chat.name || ""] || {
       content: "No messages yet",
       time: new Date(chat.updatedAt!),
+      unreadCount: 0
     };
   };
 
@@ -85,17 +94,14 @@ export default function ChatList({ chats, selectedChat, onSelectChat }: ChatList
                 </div>
                 <div className="flex items-center justify-between mt-1">
                   <div className="flex items-center flex-1 min-w-0">
-                    {lastMessage.type === "image" && (
-                      <Camera className="w-4 h-4 text-whatsapp-secondary mr-1 flex-shrink-0" />
-                    )}
                     <p className="text-whatsapp-secondary text-sm truncate">
                       {lastMessage.content}
                     </p>
                   </div>
-                  {/* Mock unread count for some chats */}
-                  {(chat.name === "Bhaiya" || chat.name === "AccioJob") && (
-                    <div className="bg-whatsapp-green text-white text-xs rounded-full w-5 h-5 flex items-center justify-center ml-2 flex-shrink-0">
-                      1
+                  {/* Show unread count if there are unread messages */}
+                  {lastMessage.unreadCount && lastMessage.unreadCount > 0 && (
+                    <div className="bg-whatsapp-green text-white text-xs rounded-full min-w-[20px] h-5 flex items-center justify-center ml-2 flex-shrink-0 px-1">
+                      {lastMessage.unreadCount}
                     </div>
                   )}
                 </div>

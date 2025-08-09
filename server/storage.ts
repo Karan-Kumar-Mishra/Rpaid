@@ -52,35 +52,35 @@ export class MemStorage implements IStorage {
     };
     this.users.set(currentUser.id, currentUser);
 
-    // Create other users
+    // Create other users based on real WhatsApp data
     const contacts = [
       {
         id: "user-2",
-        username: "papa_ji",
-        displayName: "Papa Ji",
-        avatar: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&h=100",
+        username: "ravi_kumar",
+        displayName: "Ravi Kumar",
+        avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&h=100",
       },
       {
         id: "user-3",
-        username: "gaurav_sir",
-        displayName: "Gaurav Sir Mindstein Software",
-        avatar: "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&h=100",
-      },
-      {
-        id: "user-4",
-        username: "acciojob",
-        displayName: "AccioJob",
-        avatar: "https://images.unsplash.com/photo-1549924231-f129b911e442?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&h=100",
-      },
-      {
-        id: "user-5",
-        username: "sarah",
-        displayName: "Sarah Johnson",
+        username: "neha_joshi",
+        displayName: "Neha Joshi",
         avatar: "https://images.unsplash.com/photo-1494790108755-2616b612b776?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&h=100",
       },
       {
+        id: "user-4",
+        username: "business_support",
+        displayName: "Business Support",
+        avatar: "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&h=100",
+      },
+      {
+        id: "user-5",
+        username: "team_lead",
+        displayName: "Team Lead",
+        avatar: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&h=100",
+      },
+      {
         id: "user-6",
-        username: "alex",
+        username: "alex_chen",
         displayName: "Alex Chen",
         avatar: "https://images.unsplash.com/photo-1507591064344-4c6ce005b128?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&h=100",
       },
@@ -97,12 +97,13 @@ export class MemStorage implements IStorage {
       this.users.set(user.id, user);
     });
 
-    // Create chats
+    // Create chats based on real WhatsApp conversations
     const chats = [
-      { id: "chat-1", name: "Bhaiya", isGroup: false, avatar: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&h=100" },
-      { id: "chat-2", name: "Papa Ji", isGroup: false, avatar: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&h=100" },
-      { id: "chat-3", name: "Gaurav Sir Mindstein Software", isGroup: false, avatar: "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&h=100" },
-      { id: "chat-4", name: "AccioJob", isGroup: false, avatar: "https://images.unsplash.com/photo-1549924231-f129b911e442?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&h=100" },
+      { id: "chat-1", name: "Ravi Kumar", isGroup: false, avatar: contacts[0].avatar },
+      { id: "chat-2", name: "Neha Joshi", isGroup: false, avatar: contacts[1].avatar },
+      { id: "chat-3", name: "Business Support", isGroup: false, avatar: contacts[2].avatar },
+      { id: "chat-4", name: "Team Lead", isGroup: false, avatar: contacts[3].avatar },
+      { id: "chat-5", name: "Project Team", isGroup: true, avatar: "https://images.unsplash.com/photo-1511632765486-a01980e01a18?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&h=100" },
     ];
 
     chats.forEach(chat => {
@@ -124,48 +125,114 @@ export class MemStorage implements IStorage {
         userId: "user-1",
         joinedAt: new Date(),
       });
+
+      // Add other users to respective chats
+      if (chat.id === "chat-1") {
+        const otherMembershipId = randomUUID();
+        this.chatMembers.set(otherMembershipId, {
+          id: otherMembershipId,
+          chatId: chat.id,
+          userId: "user-2",
+          joinedAt: new Date(),
+        });
+      } else if (chat.id === "chat-2") {
+        const otherMembershipId = randomUUID();
+        this.chatMembers.set(otherMembershipId, {
+          id: otherMembershipId,
+          chatId: chat.id,
+          userId: "user-3",
+          joinedAt: new Date(),
+        });
+      } else if (chat.id === "chat-3") {
+        const otherMembershipId = randomUUID();
+        this.chatMembers.set(otherMembershipId, {
+          id: otherMembershipId,
+          chatId: chat.id,
+          userId: "user-4",
+          joinedAt: new Date(),
+        });
+      } else if (chat.id === "chat-4") {
+        const otherMembershipId = randomUUID();
+        this.chatMembers.set(otherMembershipId, {
+          id: otherMembershipId,
+          chatId: chat.id,
+          userId: "user-5",
+          joinedAt: new Date(),
+        });
+      } else if (chat.id === "chat-5") {
+        // Group chat with multiple members
+        ["user-5", "user-6"].forEach(userId => {
+          const groupMembershipId = randomUUID();
+          this.chatMembers.set(groupMembershipId, {
+            id: groupMembershipId,
+            chatId: chat.id,
+            userId: userId,
+            joinedAt: new Date(),
+          });
+        });
+      }
     });
 
-    // Create messages
+    // Create messages from real WhatsApp conversation data
     const messages = [
+      // Conversation 1 - Ravi Kumar
       {
         id: "msg-1",
         chatId: "chat-1",
-        senderId: "user-2",
-        content: "https://youtube.com/shorts/4MDyVZ2b9-DeaJ_ZJBGAOoPaCfRcBGJ",
-        messageType: "link",
-        metadata: {
-          url: "https://youtube.com/shorts/4MDyVZ2b9-DeaJ_ZJBGAOoPaCfRcBGJ",
-          title: "The SHOCKING Truth About $35 Dalal Being Sold for $40",
-          description: "The SHOCKING Truth About $35 Dalal Being youtube.com",
-          thumbnail: "https://images.unsplash.com/photo-1555066931-4365d14bab8c?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=225",
-          domain: "youtube.com"
-        },
-        createdAt: new Date(Date.now() - 3600000),
+        senderId: "user-2", // Ravi Kumar
+        content: "Hi, I'd like to know more about your services.",
+        messageType: "text",
+        createdAt: new Date("2025-08-06T12:00:00"),
       },
       {
         id: "msg-2",
         chatId: "chat-1",
-        senderId: "user-1",
-        content: "Hi",
+        senderId: "user-1", // Our business response
+        content: "Hi Ravi! Sure, I'd be happy to help you with that. Could you tell me what you're looking for?",
         messageType: "text",
-        createdAt: new Date(Date.now() - 86400000),
+        createdAt: new Date("2025-08-06T12:00:20"),
       },
+      // Conversation 2 - Neha Joshi
       {
         id: "msg-3",
         chatId: "chat-2",
-        senderId: "user-3",
-        content: "7895552273",
+        senderId: "user-3", // Neha Joshi
+        content: "Hi, I saw your ad. Can you share more details?",
         messageType: "text",
-        createdAt: new Date(Date.now() - 7200000),
+        createdAt: new Date("2025-08-06T12:16:40"),
       },
       {
         id: "msg-4",
+        chatId: "chat-2",
+        senderId: "user-1", // Our business response
+        content: "Hi Neha! Absolutely. We offer curated home decor pieces—are you looking for nameplates, wall art, or something else?",
+        messageType: "text",
+        createdAt: new Date("2025-08-06T12:17:10"),
+      },
+      // Additional sample messages for other chats
+      {
+        id: "msg-5",
         chatId: "chat-3",
         senderId: "user-4",
-        content: "Photo",
-        messageType: "image",
-        createdAt: new Date(Date.now() - 14400000),
+        content: "Your message was delivered successfully",
+        messageType: "text",
+        createdAt: new Date("2025-08-06T11:45:00"),
+      },
+      {
+        id: "msg-6",
+        chatId: "chat-4",
+        senderId: "user-5",
+        content: "Meeting scheduled for tomorrow at 3 PM",
+        messageType: "text",
+        createdAt: new Date("2025-08-06T10:30:00"),
+      },
+      {
+        id: "msg-7",
+        chatId: "chat-5",
+        senderId: "user-6",
+        content: "Project update shared in the team drive",
+        messageType: "text",
+        createdAt: new Date("2025-08-06T09:15:00"),
       },
     ];
 
