@@ -96,7 +96,7 @@ export default function Home() {
   }
 
   return (
-    <div className="flex h-screen whatsapp-bg">
+    <div className="flex h-screen whatsapp-bg overflow-hidden">
       <div className={`${selectedChat ? 'hidden lg:block' : 'block'} w-full lg:w-96 flex-shrink-0`}>
         <Sidebar
           currentUser={currentUser}
