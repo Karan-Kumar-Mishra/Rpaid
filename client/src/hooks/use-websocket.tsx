@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useCallback } from "react";
 
 interface WebSocketMessage {
   type: string;
@@ -13,6 +13,12 @@ interface UseWebSocketProps {
 export function useWebSocket({ onMessage }: UseWebSocketProps) {
   const [isConnected, setIsConnected] = useState(false);
   const websocketRef = useRef<WebSocket | null>(null);
+  const onMessageRef = useRef(onMessage);
+
+  // Update the ref whenever onMessage changes
+  useEffect(() => {
+    onMessageRef.current = onMessage;
+  }, [onMessage]);
 
   useEffect(() => {
     const protocol = window.location.protocol === "https:" ? "wss:" : "ws:";
@@ -29,7 +35,7 @@ export function useWebSocket({ onMessage }: UseWebSocketProps) {
     ws.onmessage = (event) => {
       try {
         const data = JSON.parse(event.data);
-        onMessage(data);
+        onMessageRef.current(data);
       } catch (error) {
         console.error("Error parsing WebSocket message:", error);
       }
@@ -47,7 +53,7 @@ export function useWebSocket({ onMessage }: UseWebSocketProps) {
     return () => {
       ws.close();
     };
-  }, [onMessage]);
+  }, []); // Remove onMessage dependency
 
   const sendMessage = (message: any) => {
     if (websocketRef.current && websocketRef.current.readyState === WebSocket.OPEN) {

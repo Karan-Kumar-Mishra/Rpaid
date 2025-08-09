@@ -14,7 +14,15 @@ export default function Home() {
   const { sendMessage: sendWSMessage } = useWebSocket({
     onMessage: (data) => {
       if (data.type === "new_message") {
-        setMessages(prev => [...prev, data.data]);
+        // Only add message if it's for the currently selected chat
+        if (selectedChat && data.data.chatId === selectedChat.id) {
+          setMessages(prev => {
+            // Check if message already exists (avoid duplicates)
+            const messageExists = prev.some(msg => msg.id === data.data.id);
+            if (messageExists) return prev;
+            return [...prev, data.data];
+          });
+        }
       } else if (data.type === "user_typing") {
         setTypingUsers(prev => ({
           ...prev,
@@ -46,7 +54,22 @@ export default function Home() {
   }, [selectedChat]);
 
   const sendMessage = async (content: string, messageType: string = "text", metadata?: any) => {
-    if (!selectedChat) return;
+    if (!selectedChat || !currentUser) return;
+
+    const tempId = Date.now().toString();
+    const optimisticMessage = {
+      id: tempId,
+      chatId: selectedChat.id,
+      senderId: currentUser.id,
+      content,
+      messageType,
+      metadata,
+      createdAt: new Date(),
+      readBy: []
+    };
+
+    // Add optimistic message immediately
+    setMessages(prev => [...prev, optimisticMessage]);
 
     const messageData = {
       content,
@@ -65,11 +88,19 @@ export default function Home() {
 
       if (!response.ok) {
         throw new Error('Failed to send message');
+        // Remove optimistic message on error
+        setMessages(prev => prev.filter(msg => msg.id !== tempId));
+      } else {
+        const actualMessage = await response.json();
+        // Replace optimistic message with actual message
+        setMessages(prev => 
+          prev.map(msg => msg.id === tempId ? actualMessage : msg)
+        );
       }
-
-      // Message will be added via WebSocket
     } catch (error) {
       console.error('Error sending message:', error);
+      // Remove optimistic message on error
+      setMessages(prev => prev.filter(msg => msg.id !== tempId));
     }
   };
 
