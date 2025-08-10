@@ -1,0 +1,507 @@
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WhatsApp Web Clone</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'whatsapp-green': '#25D366',
+                        'whatsapp-dark-bg': '#111B21',
+                        'whatsapp-panel': '#202C33',
+                        'whatsapp-chat-bg': '#0B141A',
+                        'whatsapp-sent': '#005C4B',
+                        'whatsapp-received': '#202C33',
+                        'whatsapp-text': '#E9EDEF',
+                        'whatsapp-secondary': '#8696A0',
+                        'whatsapp-border': '#2A3942'
+                    },
+                    fontFamily: {
+                        'whatsapp': ['Segoe UI', 'Helvetica Neue', 'Helvetica', 'Lucida Grande', 'Arial', 'Ubuntu', 'Cantarell', 'Fira Sans', 'sans-serif']
+                    }
+                }
+            }
+        };
+    </script>
+</head>
+<body class="bg-whatsapp-dark-bg text-whatsapp-text font-whatsapp overflow-hidden h-screen">
+    <div class="flex h-screen">
+        <!-- @COMPONENT: Sidebar -->
+        <!-- Left Sidebar -->
+        <div class="w-80 bg-whatsapp-panel border-r border-whatsapp-border flex flex-col">
+            <!-- Header -->
+            <div class="bg-whatsapp-panel px-4 py-3 border-b border-whatsapp-border">
+                <div class="flex items-center justify-between">
+                    <!-- User Profile -->
+                    <div class="flex items-center space-x-3">
+                        <!-- User avatar using professional headshot -->
+                        <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&h=100" 
+                             alt="User Profile" 
+                             class="w-10 h-10 rounded-full object-cover" 
+                             data-mock="true">
+                        <span class="text-whatsapp-text font-medium" data-bind="user.name">Bhaiya</span>
+                    </div>
+                    <!-- Action Icons -->
+                    <div class="flex items-center space-x-4 text-whatsapp-secondary">
+                        <button class="hover:text-whatsapp-text transition-colors" data-event="click:openCommunities">
+                            <i class="fas fa-users text-lg"></i>
+                        </button>
+                        <button class="hover:text-whatsapp-text transition-colors" data-event="click:openStatus">
+                            <i class="fas fa-circle-notch text-lg"></i>
+                        </button>
+                        <button class="hover:text-whatsapp-text transition-colors" data-event="click:newChat">
+                            <i class="fas fa-comment-alt text-lg"></i>
+                        </button>
+                        <button class="hover:text-whatsapp-text transition-colors" data-event="click:openMenu">
+                            <i class="fas fa-ellipsis-v text-lg"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Search Bar -->
+            <div class="px-3 py-2 bg-whatsapp-panel">
+                <div class="relative">
+                    <i class="fas fa-search absolute left-4 top-1/2 transform -translate-y-1/2 text-whatsapp-secondary text-sm"></i>
+                    <input type="text" 
+                           placeholder="Search or start new chat" 
+                           class="w-full bg-whatsapp-chat-bg text-whatsapp-text pl-12 pr-4 py-2 rounded-lg border-none outline-none focus:ring-1 focus:ring-whatsapp-green"
+                           data-event="input:handleSearch">
+                </div>
+            </div>
+
+            <!-- Filter Tabs -->
+            <div class="px-3 py-2 border-b border-whatsapp-border">
+                <div class="flex space-x-6">
+                    <button class="text-whatsapp-green border-b-2 border-whatsapp-green pb-2 text-sm font-medium" data-event="click:filterAll">All</button>
+                    <button class="text-whatsapp-secondary hover:text-whatsapp-text pb-2 text-sm font-medium transition-colors" data-event="click:filterUnread">Unread</button>
+                    <button class="text-whatsapp-secondary hover:text-whatsapp-text pb-2 text-sm font-medium transition-colors" data-event="click:filterFavorites">Favorites</button>
+                    <button class="text-whatsapp-secondary hover:text-whatsapp-text pb-2 text-sm font-medium transition-colors" data-event="click:filterGroups">Groups</button>
+                </div>
+            </div>
+
+            <!-- Chat List -->
+            <div class="flex-1 overflow-y-auto">
+                <!-- @MAP: chatList.map(chat => ( -->
+                
+                <!-- Locked Chats Section -->
+                <div class="px-3 py-2">
+                    <div class="flex items-center space-x-3 p-3 hover:bg-whatsapp-chat-bg rounded-lg cursor-pointer transition-colors">
+                        <div class="w-12 h-12 bg-whatsapp-green rounded-full flex items-center justify-center">
+                            <i class="fas fa-lock text-white"></i>
+                        </div>
+                        <div class="flex-1">
+                            <h3 class="text-whatsapp-text font-medium">Locked chats</h3>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Saved Messages -->
+                <div class="px-3 py-1">
+                    <div class="flex items-center space-x-3 p-3 hover:bg-whatsapp-chat-bg rounded-lg cursor-pointer transition-colors" data-event="click:openChat">
+                        <div class="w-12 h-12 bg-whatsapp-green rounded-full flex items-center justify-center">
+                            <i class="fas fa-bookmark text-white"></i>
+                        </div>
+                        <div class="flex-1">
+                            <div class="flex justify-between items-start">
+                                <h3 class="text-whatsapp-text font-medium">Saved Messages</h3>
+                                <span class="text-whatsapp-secondary text-xs">Wednesday</span>
+                            </div>
+                            <p class="text-whatsapp-secondary text-sm truncate">https://drive.google.com/file/d/19kegS...</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Active Chat (Bhaiya) -->
+                <div class="px-3 py-1">
+                    <div class="flex items-center space-x-3 p-3 bg-whatsapp-chat-bg rounded-lg cursor-pointer" data-event="click:openChat">
+                        <!-- Contact avatar - young professional -->
+                        <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&h=100" 
+                             alt="Bhaiya Profile" 
+                             class="w-12 h-12 rounded-full object-cover" 
+                             data-mock="true">
+                        <div class="flex-1">
+                            <div class="flex justify-between items-start">
+                                <h3 class="text-whatsapp-text font-medium">Bhaiya</h3>
+                                <span class="text-whatsapp-secondary text-xs">2:44 PM</span>
+                            </div>
+                            <p class="text-whatsapp-secondary text-sm truncate">https://youtube.com/shorts/4MDyVZ2b9...</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Papa Ji -->
+                <div class="px-3 py-1">
+                    <div class="flex items-center space-x-3 p-3 hover:bg-whatsapp-chat-bg rounded-lg cursor-pointer transition-colors" data-event="click:openChat">
+                        <!-- Contact avatar - older professional -->
+                        <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&h=100" 
+                             alt="Papa Ji Profile" 
+                             class="w-12 h-12 rounded-full object-cover" 
+                             data-mock="true">
+                        <div class="flex-1">
+                            <div class="flex justify-between items-start">
+                                <h3 class="text-whatsapp-text font-medium">Papa Ji</h3>
+                                <span class="text-whatsapp-secondary text-xs">1:26 PM</span>
+                            </div>
+                            <p class="text-whatsapp-secondary text-sm truncate">7895552273</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Gaurav Sir Mindstein Software -->
+                <div class="px-3 py-1">
+                    <div class="flex items-center space-x-3 p-3 hover:bg-whatsapp-chat-bg rounded-lg cursor-pointer transition-colors" data-event="click:openChat">
+                        <!-- Business contact avatar -->
+                        <img src="https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&h=100" 
+                             alt="Gaurav Sir Profile" 
+                             class="w-12 h-12 rounded-full object-cover" 
+                             data-mock="true">
+                        <div class="flex-1">
+                            <div class="flex justify-between items-start">
+                                <h3 class="text-whatsapp-text font-medium">Gaurav Sir Mindstein Software</h3>
+                                <span class="text-whatsapp-secondary text-xs">10:39 AM</span>
+                            </div>
+                            <div class="flex items-center">
+                                <i class="fas fa-camera text-whatsapp-secondary mr-1 text-xs"></i>
+                                <p class="text-whatsapp-secondary text-sm truncate">Photo</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- AccioJob -->
+                <div class="px-3 py-1">
+                    <div class="flex items-center space-x-3 p-3 hover:bg-whatsapp-chat-bg rounded-lg cursor-pointer transition-colors" data-event="click:openChat">
+                        <!-- Company logo placeholder -->
+                        <img src="https://images.unsplash.com/photo-1549924231-f129b911e442?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&h=100" 
+                             alt="AccioJob Profile" 
+                             class="w-12 h-12 rounded-full object-cover" 
+                             data-mock="true">
+                        <div class="flex-1">
+                            <div class="flex justify-between items-start">
+                                <h3 class="text-whatsapp-text font-medium">AccioJob</h3>
+                                <span class="text-whatsapp-secondary text-xs">12:44 AM</span>
+                            </div>
+                            <p class="text-whatsapp-secondary text-sm truncate">Hi Karna Kumar Mishra, Your slot booking is confir...</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Additional contacts -->
+                <div class="px-3 py-1">
+                    <div class="flex items-center space-x-3 p-3 hover:bg-whatsapp-chat-bg rounded-lg cursor-pointer transition-colors" data-event="click:openChat">
+                        <!-- Contact avatar - female professional -->
+                        <img src="https://images.unsplash.com/photo-1494790108755-2616b612b776?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&h=100" 
+                             alt="Sarah Profile" 
+                             class="w-12 h-12 rounded-full object-cover" 
+                             data-mock="true">
+                        <div class="flex-1">
+                            <div class="flex justify-between items-start">
+                                <h3 class="text-whatsapp-text font-medium">Sarah Johnson</h3>
+                                <span class="text-whatsapp-secondary text-xs">Yesterday</span>
+                            </div>
+                            <p class="text-whatsapp-secondary text-sm truncate">Thanks for the meeting today!</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="px-3 py-1">
+                    <div class="flex items-center space-x-3 p-3 hover:bg-whatsapp-chat-bg rounded-lg cursor-pointer transition-colors" data-event="click:openChat">
+                        <!-- Contact avatar - young professional -->
+                        <img src="https://images.unsplash.com/photo-1507591064344-4c6ce005b128?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&h=100" 
+                             alt="Alex Profile" 
+                             class="w-12 h-12 rounded-full object-cover" 
+                             data-mock="true">
+                        <div class="flex-1">
+                            <div class="flex justify-between items-start">
+                                <h3 class="text-whatsapp-text font-medium">Alex Chen</h3>
+                                <span class="text-whatsapp-secondary text-xs">Tuesday</span>
+                            </div>
+                            <p class="text-whatsapp-secondary text-sm truncate">See you at the conference!</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- @END_MAP )) -->
+            </div>
+
+            <!-- Get WhatsApp for Windows -->
+            <div class="px-3 py-3 border-t border-whatsapp-border">
+                <div class="flex items-center space-x-3 p-2 hover:bg-whatsapp-chat-bg rounded-lg cursor-pointer transition-colors">
+                    <div class="w-8 h-8 bg-whatsapp-green rounded-lg flex items-center justify-center">
+                        <i class="fab fa-whatsapp text-white text-sm"></i>
+                    </div>
+                    <span class="text-whatsapp-green text-sm font-medium">Get WhatsApp for Windows</span>
+                </div>
+            </div>
+        </div>
+        <!-- @END_COMPONENT: Sidebar -->
+
+        <!-- @COMPONENT: ChatArea -->
+        <!-- Main Chat Area -->
+        <div class="flex-1 flex flex-col bg-whatsapp-chat-bg">
+            <!-- Chat Header -->
+            <div class="bg-whatsapp-panel px-4 py-3 border-b border-whatsapp-border">
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center space-x-3">
+                        <!-- Active chat contact avatar -->
+                        <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&h=100" 
+                             alt="Bhaiya Profile" 
+                             class="w-10 h-10 rounded-full object-cover" 
+                             data-mock="true">
+                        <div>
+                            <h2 class="text-whatsapp-text font-medium">Bhaiya</h2>
+                            <p class="text-whatsapp-secondary text-xs">last seen today at 2:44 PM</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center space-x-4 text-whatsapp-secondary">
+                        <button class="hover:text-whatsapp-text transition-colors" data-event="click:videoCall">
+                            <i class="fas fa-video text-lg"></i>
+                        </button>
+                        <button class="hover:text-whatsapp-text transition-colors" data-event="click:voiceCall">
+                            <i class="fas fa-phone text-lg"></i>
+                        </button>
+                        <button class="hover:text-whatsapp-text transition-colors" data-event="click:search">
+                            <i class="fas fa-search text-lg"></i>
+                        </button>
+                        <button class="hover:text-whatsapp-text transition-colors" data-event="click:openChatMenu">
+                            <i class="fas fa-ellipsis-v text-lg"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Messages Area -->
+            <div class="flex-1 overflow-y-auto p-4 space-y-4" style="background-image: url('data:image/svg+xml,<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 100\"><defs><pattern id=\"chat-bg\" x=\"0\" y=\"0\" width=\"100\" height=\"100\" patternUnits=\"userSpaceOnUse\"><circle cx=\"50\" cy=\"50\" r=\"2\" fill=\"%23ffffff\" opacity=\"0.05\"/></pattern></defs><rect width=\"100\" height=\"100\" fill=\"url(%23chat-bg)\"/></svg>');">
+                
+                <!-- Date Separator -->
+                <div class="flex justify-center">
+                    <span class="bg-whatsapp-panel text-whatsapp-secondary text-xs px-3 py-1 rounded-lg">Wednesday</span>
+                </div>
+
+                <!-- Received Message with YouTube Link -->
+                <div class="flex justify-start">
+                    <div class="max-w-md">
+                        <div class="bg-whatsapp-received p-3 rounded-lg rounded-bl-none shadow-lg">
+                            <p class="text-whatsapp-text text-sm mb-2">youtube.com</p>
+                            <p class="text-whatsapp-green text-sm mb-3 break-all">https://youtube.com/shorts/4MDyVZ2b9-DeaJ_ZJBGAOoPaCfRcBGJ</p>
+                            
+                            <!-- YouTube Link Preview -->
+                            <div class="border border-whatsapp-border rounded-lg overflow-hidden mt-3">
+                                <!-- YouTube video thumbnail -->
+                                <img src="https://images.unsplash.com/photo-1611162617474-5b21e879e113?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=225" 
+                                     alt="YouTube video thumbnail" 
+                                     class="w-full h-32 object-cover" 
+                                     data-mock="true">
+                                <div class="p-3">
+                                    <h4 class="text-whatsapp-text text-sm font-medium mb-1">How to Build Amazing Web Apps</h4>
+                                    <p class="text-whatsapp-secondary text-xs">Learn the latest web development techniques with this comprehensive tutorial...</p>
+                                    <p class="text-whatsapp-secondary text-xs mt-2">youtube.com</p>
+                                </div>
+                            </div>
+                            
+                            <div class="flex justify-end items-center mt-2 space-x-1">
+                                <span class="text-whatsapp-secondary text-xs">8:41 PM</span>
+                                <i class="fas fa-check-double text-blue-400 text-xs"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Date Separator -->
+                <div class="flex justify-center">
+                    <span class="bg-whatsapp-panel text-whatsapp-secondary text-xs px-3 py-1 rounded-lg">Yesterday</span>
+                </div>
+
+                <!-- Sent Message -->
+                <div class="flex justify-end">
+                    <div class="max-w-md">
+                        <div class="bg-whatsapp-sent p-3 rounded-lg rounded-br-none shadow-lg">
+                            <p class="text-white text-sm">Hi</p>
+                            <div class="flex justify-end items-center mt-1 space-x-1">
+                                <span class="text-white/70 text-xs">1:58 AM</span>
+                                <i class="fas fa-check-double text-blue-300 text-xs"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Date Separator -->
+                <div class="flex justify-center">
+                    <span class="bg-whatsapp-panel text-whatsapp-secondary text-xs px-3 py-1 rounded-lg">Today</span>
+                </div>
+
+                <!-- Received Message with YouTube Link Preview -->
+                <div class="flex justify-start">
+                    <div class="max-w-md">
+                        <div class="bg-whatsapp-received p-3 rounded-lg rounded-bl-none shadow-lg">
+                            <p class="text-whatsapp-green text-sm mb-3 break-all">https://youtube.com/shorts/4MDyVZ2b9-DeaJ_ZJBGAOoPaCfRcBGJ</p>
+                            
+                            <!-- YouTube Shorts Preview -->
+                            <div class="border border-whatsapp-border rounded-lg overflow-hidden">
+                                <!-- Popular tech/coding YouTube thumbnail -->
+                                <img src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=225" 
+                                     alt="YouTube shorts thumbnail showing coding" 
+                                     class="w-full h-40 object-cover" 
+                                     data-mock="true">
+                                <div class="absolute top-2 right-2 bg-black/80 text-white text-xs px-2 py-1 rounded">
+                                    <i class="fab fa-youtube mr-1"></i>
+                                    Shorts
+                                </div>
+                                <div class="p-3">
+                                    <h4 class="text-whatsapp-text text-sm font-medium mb-1">The SHOCKING Truth About $35 Dalal Being Sold for $40</h4>
+                                    <p class="text-whatsapp-secondary text-xs">The SHOCKING Truth About $35 Dalal Being youtube.com</p>
+                                </div>
+                            </div>
+                            
+                            <div class="flex justify-end items-center mt-2 space-x-1">
+                                <span class="text-whatsapp-secondary text-xs">2:44 PM</span>
+                                <i class="fas fa-check-double text-blue-400 text-xs"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Typing Indicator -->
+                <div class="flex justify-start" data-mock="true" data-implementation="Show when contact is typing">
+                    <div class="flex items-center space-x-2 bg-whatsapp-received p-3 rounded-lg rounded-bl-none">
+                        <div class="flex space-x-1">
+                            <div class="w-2 h-2 bg-whatsapp-secondary rounded-full animate-bounce"></div>
+                            <div class="w-2 h-2 bg-whatsapp-secondary rounded-full animate-bounce" style="animation-delay: 0.1s;"></div>
+                            <div class="w-2 h-2 bg-whatsapp-secondary rounded-full animate-bounce" style="animation-delay: 0.2s;"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Message Input Area -->
+            <div class="bg-whatsapp-panel px-4 py-3 border-t border-whatsapp-border">
+                <div class="flex items-center space-x-3">
+                    <!-- Attachment Button -->
+                    <button class="text-whatsapp-secondary hover:text-whatsapp-text transition-colors" data-event="click:openAttachment">
+                        <i class="fas fa-paperclip text-xl"></i>
+                    </button>
+                    
+                    <!-- Message Input -->
+                    <div class="flex-1 relative">
+                        <input type="text" 
+                               placeholder="Type a message" 
+                               class="w-full bg-whatsapp-chat-bg text-whatsapp-text px-4 py-3 pr-12 rounded-lg border-none outline-none focus:ring-1 focus:ring-whatsapp-green"
+                               data-event="input:handleMessageInput">
+                        <!-- Emoji Button -->
+                        <button class="absolute right-3 top-1/2 transform -translate-y-1/2 text-whatsapp-secondary hover:text-whatsapp-text transition-colors" data-event="click:openEmoji">
+                            <i class="far fa-smile text-xl"></i>
+                        </button>
+                    </div>
+                    
+                    <!-- Voice/Send Button -->
+                    <button class="bg-whatsapp-green text-white p-3 rounded-full hover:bg-green-600 transition-colors" data-event="click:sendMessage">
+                        <i class="fas fa-microphone text-lg"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <!-- @END_COMPONENT: ChatArea -->
+    </div>
+
+    <!-- Emoji Picker Modal (Hidden by default) -->
+    <div id="emojiPicker" class="hidden fixed bottom-20 right-4 bg-whatsapp-panel border border-whatsapp-border rounded-lg shadow-xl p-4 z-50" data-mock="true">
+        <div class="grid grid-cols-8 gap-2 text-xl">
+            <button class="hover:bg-whatsapp-chat-bg p-2 rounded" data-event="click:insertEmoji">😀</button>
+            <button class="hover:bg-whatsapp-chat-bg p-2 rounded" data-event="click:insertEmoji">😂</button>
+            <button class="hover:bg-whatsapp-chat-bg p-2 rounded" data-event="click:insertEmoji">😍</button>
+            <button class="hover:bg-whatsapp-chat-bg p-2 rounded" data-event="click:insertEmoji">🤔</button>
+            <button class="hover:bg-whatsapp-chat-bg p-2 rounded" data-event="click:insertEmoji">👍</button>
+            <button class="hover:bg-whatsapp-chat-bg p-2 rounded" data-event="click:insertEmoji">❤️</button>
+            <button class="hover:bg-whatsapp-chat-bg p-2 rounded" data-event="click:insertEmoji">🔥</button>
+            <button class="hover:bg-whatsapp-chat-bg p-2 rounded" data-event="click:insertEmoji">💯</button>
+        </div>
+    </div>
+
+    <!-- Attachment Menu (Hidden by default) -->
+    <div id="attachmentMenu" class="hidden fixed bottom-20 left-4 bg-whatsapp-panel border border-whatsapp-border rounded-lg shadow-xl p-2 z-50" data-mock="true">
+        <div class="space-y-1">
+            <button class="flex items-center space-x-3 w-full p-3 hover:bg-whatsapp-chat-bg rounded-lg transition-colors" data-event="click:attachDocument">
+                <div class="w-10 h-10 bg-blue-500 rounded-full flex items-center justify-center">
+                    <i class="fas fa-file text-white"></i>
+                </div>
+                <span class="text-whatsapp-text">Document</span>
+            </button>
+            <button class="flex items-center space-x-3 w-full p-3 hover:bg-whatsapp-chat-bg rounded-lg transition-colors" data-event="click:attachPhoto">
+                <div class="w-10 h-10 bg-purple-500 rounded-full flex items-center justify-center">
+                    <i class="fas fa-camera text-white"></i>
+                </div>
+                <span class="text-whatsapp-text">Camera</span>
+            </button>
+            <button class="flex items-center space-x-3 w-full p-3 hover:bg-whatsapp-chat-bg rounded-lg transition-colors" data-event="click:attachGallery">
+                <div class="w-10 h-10 bg-pink-500 rounded-full flex items-center justify-center">
+                    <i class="fas fa-images text-white"></i>
+                </div>
+                <span class="text-whatsapp-text">Gallery</span>
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // Basic UI interactions - no business logic implementation
+        (function() {
+            // TODO: Implement real-time messaging, state management, and API calls
+            
+            // Simple UI toggle functions
+            function toggleEmoji() {
+                const picker = document.getElementById('emojiPicker');
+                picker.classList.toggle('hidden');
+            }
+            
+            function toggleAttachment() {
+                const menu = document.getElementById('attachmentMenu');
+                menu.classList.toggle('hidden');
+            }
+            
+            // Mock message sending animation
+            function simulateMessageSend() {
+                // TODO: Implement actual message sending logic
+                console.log('Message would be sent here');
+            }
+            
+            // Hide menus when clicking outside
+            document.addEventListener('click', function(e) {
+                if (!e.target.closest('#emojiPicker') && !e.target.closest('[data-event*="openEmoji"]')) {
+                    document.getElementById('emojiPicker').classList.add('hidden');
+                }
+                if (!e.target.closest('#attachmentMenu') && !e.target.closest('[data-event*="openAttachment"]')) {
+                    document.getElementById('attachmentMenu').classList.add('hidden');
+                }
+            });
+            
+            // Basic event bindings for demo
+            document.querySelectorAll('[data-event*="openEmoji"]').forEach(btn => {
+                btn.addEventListener('click', toggleEmoji);
+            });
+            
+            document.querySelectorAll('[data-event*="openAttachment"]').forEach(btn => {
+                btn.addEventListener('click', toggleAttachment);
+            });
+            
+            // Input focus handling
+            const messageInput = document.querySelector('input[data-event*="handleMessageInput"]');
+            if (messageInput) {
+                messageInput.addEventListener('focus', function() {
+                    // TODO: Handle typing indicators
+                });
+                
+                messageInput.addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter') {
+                        simulateMessageSend();
+                        this.value = '';
+                    }
+                });
+            }
+        })();
+    </script>
+</body>
+</html>

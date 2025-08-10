@@ -109,7 +109,7 @@ export default function ChatArea({
 
   if (!selectedChat) {
     return (
-      <div className="flex-1 flex items-center justify-center bg-whatsapp-chat-bg">
+      <div className="flex-1  flex items-center justify-center h-screen bg-whatsapp-chat-bg">
         <div className="text-center text-whatsapp-secondary">
           <MessageCircle className="w-16 h-16 mx-auto mb-4 opacity-50" />
           <h2 className="text-xl font-semibold mb-2 text-whatsapp-text">WhatsApp Web</h2>
@@ -121,9 +121,8 @@ export default function ChatArea({
   }
 
   const messageGroups = groupMessagesByDate(messages);
-
   return (
-    <div className="flex-1 flex flex-col bg-whatsapp-chat-bg min-w-0 overflow-hidden">
+    <div className="flex flex-col h-full w-full min-w-0 overflow-hidden bg-whatsapp-chat-bg">
       {/* Chat Header */}
       <div className="bg-whatsapp-panel px-4 py-3 border-b border-whatsapp-border">
         <div className="flex items-center justify-between">
@@ -136,9 +135,10 @@ export default function ChatArea({
               <ArrowLeft className="w-5 h-5" />
             </button>
             <img
-              src={selectedChat.avatar || "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&h=100"}
+              src={selectedChat.avatar && selectedChat.avatar.trim() !== "" ? selectedChat.avatar : "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&h=100"}
               alt={`${selectedChat.name} Profile`}
               className="w-10 h-10 rounded-full object-cover"
+              onError={e => { e.currentTarget.src = "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&h=100"; }}
             />
             <div>
               <h2 className="text-whatsapp-text font-medium">{selectedChat.name}</h2>
@@ -172,7 +172,6 @@ export default function ChatArea({
                 {date}
               </span>
             </div>
-            
             {/* Messages for this date */}
             {dateMessages.map((message) => (
               <MessageBubble
@@ -196,13 +195,12 @@ export default function ChatArea({
             </div>
           </div>
         )}
-        
         <div ref={messagesEndRef} />
       </div>
 
       {/* Message Input Area */}
-      <div className="bg-whatsapp-panel px-2 sm:px-4 py-3 border-t border-whatsapp-border">
-        <form onSubmit={handleSendMessage} className="flex items-center space-x-1 sm:space-x-2">
+      <div className="sticky bottom-0 bg-whatsapp-panel px-2 sm:px-4 py-3 border-t border-whatsapp-border w-full z-10">
+        <form onSubmit={handleSendMessage} className="flex items-center w-full space-x-1 sm:space-x-2">
           {/* Attachment Button */}
           <button
             type="button"
@@ -211,13 +209,12 @@ export default function ChatArea({
           >
             <Paperclip className="w-4 h-4 sm:w-5 sm:h-5" />
           </button>
-          
           {/* Message Input */}
           <div className="flex-1 relative min-w-0">
             <input
               type="text"
               placeholder="Type a message"
-              className="w-full bg-whatsapp-chat-bg text-whatsapp-text px-3 sm:px-4 py-2 sm:py-3 pr-8 sm:pr-12 rounded-lg border-none outline-none placeholder-whatsapp-secondary focus:ring-1 focus:ring-whatsapp-green text-sm sm:text-base"
+              className="w-full bg-whatsapp-chat-bg text-whatsapp-text px-3 sm:px-4 py-2 sm:py-3 pr-8 sm:pr-12 rounded-3xl border-none outline-none placeholder-whatsapp-secondary focus:ring-1 focus:ring-whatsapp-green text-sm sm:text-base"
               value={messageInput}
               onChange={handleInputChange}
             />
@@ -230,11 +227,10 @@ export default function ChatArea({
               <Smile className="w-4 h-4 sm:w-5 sm:h-5" />
             </button>
           </div>
-          
           {/* Voice/Send Button */}
           <button
             type="submit"
-            className="bg-whatsapp-green text-white p-2 sm:p-3 rounded-full hover:opacity-80 transition-opacity flex-shrink-0 min-w-[40px] sm:min-w-[48px]"
+            className="bg-whatsapp-green text-white p-2 sm:p-3 rounded-full hover:opacity-80 transition-opacity flex-shrink-0 min-w-[40px] sm:min-w-[48px] flex justify-center items-center"
           >
             {messageInput.trim() ? <Send className="w-4 h-4 sm:w-5 sm:h-5" /> : <Mic className="w-4 h-4 sm:w-5 sm:h-5" />}
           </button>

@@ -67,41 +67,40 @@ export default function ChatList({ chats, selectedChat, onSelectChat }: ChatList
   };
 
   return (
-    <div>
+    <div className="overflow-y-auto max-h-screen px-2 py-2 sm:px-4 sm:py-4">
       {chats.map((chat) => {
         const lastMessage = getLastMessage(chat);
         const isSelected = selectedChat?.id === chat.id;
-        
         return (
-          <div key={chat.id} className="px-3 py-1">
+          <div key={chat.id} className="px-1 py-1 sm:px-2 sm:py-2">
             <div
               onClick={() => onSelectChat(chat)}
-              className={`flex items-center space-x-3 p-3 rounded-lg cursor-pointer transition-colors ${
+              className={`flex items-center space-x-2 sm:space-x-3 p-2 sm:p-3 rounded-lg cursor-pointer transition-colors ${
                 isSelected ? "bg-whatsapp-selected" : "hover:bg-whatsapp-hover"
               }`}
             >
               <img
-                src={chat.avatar || "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&h=100"}
+                src={chat.avatar && chat.avatar.trim() !== "" ? chat.avatar : "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&h=100"}
                 alt={`${chat.name} Profile`}
-                className="w-12 h-12 rounded-full object-cover"
+                className="w-10 h-10 sm:w-12 sm:h-12 rounded-full object-cover flex-shrink-0"
+                onError={e => { e.currentTarget.src = "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&h=100"; }}
               />
               <div className="flex-1 min-w-0">
-                <div className="flex justify-between items-start">
-                  <h3 className="text-whatsapp-text font-medium truncate">{chat.name}</h3>
-                  <span className="text-whatsapp-secondary text-xs flex-shrink-0 ml-2">
+                <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start">
+                  <h3 className="text-whatsapp-text font-medium truncate text-base sm:text-lg">{chat.name}</h3>
+                  <span className="text-whatsapp-secondary text-xs sm:text-sm flex-shrink-0 sm:ml-2 mt-1 sm:mt-0">
                     {formatTime(lastMessage.time)}
                   </span>
                 </div>
-                <div className="flex items-center justify-between mt-1">
+                <div className="flex flex-row items-center justify-between mt-1">
                   <div className="flex items-center flex-1 min-w-0">
-                    <p className="text-whatsapp-secondary text-sm truncate">
+                    <p className="text-whatsapp-secondary text-sm sm:text-base truncate">
                       {lastMessage.content}
                     </p>
                   </div>
-                  {/* Show unread count if there are unread messages */}
                   {lastMessage.unreadCount && lastMessage.unreadCount > 0 && (
-                    <div className="bg-whatsapp-green text-white text-xs rounded-full min-w-[20px] h-5 flex items-center justify-center ml-2 flex-shrink-0 px-1">
-                      {lastMessage.unreadCount}
+                    <div className="bg-whatsapp-green  text-white text-xs sm:text-sm rounded-full w-5 h-5 sm:w-6 sm:h-6 flex items-center justify-center ml-2 flex-shrink-0 shadow-md">
+                      <span className="w-full text-center  truncate">{lastMessage.unreadCount > 99 ? '99+' : lastMessage.unreadCount}</span>
                     </div>
                   )}
                 </div>

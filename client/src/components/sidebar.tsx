@@ -57,7 +57,7 @@ export default function Sidebar({ currentUser, chats, selectedChat, onSelectChat
           <input
             type="text"
             placeholder="Search or start a new chat"
-            className="w-full bg-whatsapp-chat-bg text-whatsapp-text pl-10 pr-4 py-2 rounded-lg border-none outline-none placeholder-whatsapp-secondary focus:ring-1 focus:ring-whatsapp-green"
+            className="w-full bg-whatsapp-chat-bg text-whatsapp-text pl-10 pr-4 py-2 rounded-3xl border-none outline-none placeholder-whatsapp-secondary focus:ring-1 focus:ring-whatsapp-green"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
           />
